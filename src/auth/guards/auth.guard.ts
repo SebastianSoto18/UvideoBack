@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException('Invalid token');
     }
     const token = context.getArgByIndex(2).req.rawHeaders[accesTokenIndex+1];
-    if(!token || Array.isArray(token)){
+    if(!token){
       throw new UnauthorizedException('Invalid token');
     }
     const managToken: IUseToken | string = userToken(token)
