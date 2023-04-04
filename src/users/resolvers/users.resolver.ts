@@ -16,7 +16,7 @@ export class UsersResolver {
     users(){
         return this.userServices.findAll();
     }
-
+    
     @Mutation((returns) => UserEntity)
     CreateUser(@Args('user') user: CreateUserInput){
         return this.userServices.CreateUser(user);

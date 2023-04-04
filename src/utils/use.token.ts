@@ -8,6 +8,7 @@ export const userToken = (token:string): IUseToken | string => {
         const tokenExpireDate = new Date(decode.exp);
         return {
             sub: decode.sub,
+            email: decode.email,
             role: decode.role,
             isExpired: +tokenExpireDate < (+currentDateTime/1000)
         }

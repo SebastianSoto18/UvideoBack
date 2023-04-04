@@ -6,6 +6,7 @@ import { userToken } from 'src/utils/use.token';
 import { IUseToken } from '../interfaces/auth.interface';
 import { Request } from 'express';
 
+
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
@@ -17,9 +18,11 @@ export class AuthGuard implements CanActivate {
   ){
     const isPublic = this.reflector.get<boolean>(PUBLIC_KEY, context.getHandler());
     if(isPublic)return true;
-    
-    const request = context.switchToHttp().getRequest<Request>();
-    const token = request.headers['access_token']
+    const accesTokenIndex = context.getArgByIndex(2).req.rawHeaders.findIndex((item: string) => item.includes('access_token'));
+    if(accesTokenIndex === -1){
+      throw new UnauthorizedException('Invalid token');
+    }
+    const token = context.getArgByIndex(2).req.rawHeaders[accesTokenIndex+1];
     if(!token || Array.isArray(token)){
       throw new UnauthorizedException('Invalid token');
     }
@@ -33,14 +36,14 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException('Token expired');
     }
 
-    const {sub} = managToken
-    console.log(sub);
-    const user = await this.userServices.FindUserById(sub);
+    const {email} = managToken
+    const user = await this.userServices.FindUserByEmail(email);
     if(!user){
       throw new UnauthorizedException('invalid user');
     }
-    request.idUser= user._id;
-    request.roleUser = user.role;
+
+    context.getArgByIndex(2).req.user = user;
+
     return true
   }
 }

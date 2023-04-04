@@ -31,6 +31,7 @@ export class MongoAuthRepository implements AuthRepository{
         const payload = {
             role: user.role,
             sub: user._id,
+            email: user.email,
         };
         return {
             access_token: this.signJWT({payload,secret:configService.get('JWT_SECRET'),expires:'1h'}),
