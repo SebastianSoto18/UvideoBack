@@ -1,16 +1,16 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Roles } from "src/constants/roles";
-import { Document, Model } from "mongoose";
+import { Document, Model, Types } from "mongoose";
 
 @Schema()
 class User{
-    @Prop()
+    @Prop({ type: Types.ObjectId, default: Types.ObjectId })
     _id: string;
     @Prop({default: Date.now})
     createdAt: Date;
     @Prop({default: Date.now})
     updatedAt: Date;
-    @Prop({required: true,index: true})
+    @Prop({required: true,index: true, unique: true})
     name: string;
     @Prop({required: true, unique: true, index: true})
     email: string;

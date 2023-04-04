@@ -23,4 +23,8 @@ export class UsersService {
     FindUserByEmail(email: string): Promise<UserEntity>{
         return this.userRepository.FindUserByEmail(email)
     }
+
+    FindUserById(id: string): Promise<UserEntity>{
+        return this.userRepository.FindUserById(id);
+    }
 }

@@ -1,9 +1,12 @@
 import { InputType, Field } from "@nestjs/graphql";
-import { IsEnum, IsNotEmpty, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { Types } from "mongoose";
 import { Roles } from "src/constants/roles";
 
 @InputType()
 export class CreateUserInput{
+    @IsOptional()
+    _id: Types.ObjectId;
     @IsNotEmpty()
     @IsString()
     @Field()
